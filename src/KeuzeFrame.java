@@ -40,6 +40,14 @@ class KeuzePaneel extends JPanel implements ActionListener {
         groep7 = new JRadioButton("Groep 7");
         groep8 = new JRadioButton("Groep 8");
 
+        ButtonGroup groepRadio = new ButtonGroup();
+        groepRadio.add(groep3);
+        groepRadio.add(groep4);
+        groepRadio.add(groep5);
+        groepRadio.add(groep6);
+        groepRadio.add(groep7);
+        groepRadio.add(groep8);
+
         JPanel westGroep = new JPanel();
         westGroep.setLayout(new GridLayout(7, 1));
         westGroep.setBounds(30, 30, 100, 180);
@@ -77,6 +85,9 @@ class KeuzePaneel extends JPanel implements ActionListener {
         oostGroep.add(ranJa);
         ranNee = new JRadioButton("Nee");
         oostGroep.add(ranNee);
+        ButtonGroup ranRadio = new ButtonGroup();
+        ranRadio.add(ranJa);
+        ranRadio.add(ranNee);
 
         startKnop = new JButton("Start rekentrainer");
         startKnop.addActionListener(this);
