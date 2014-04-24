@@ -20,7 +20,8 @@ class OefenPaneel extends JPanel implements ActionListener {
     private JTextField invulVak;
     private JPanel statusGroep;
     private String naam;
-    private int groep, aantal, random, getalA, getalB, antwoordGetal, aantalGoed, aantalFout, aantalTeGaan;
+    private int input, groep, aantal, random, getalA, getalB, antwoordGetal, aantalGoed, aantalFout, aantalTeGaan;
+    private OefeningGenerator oefeningGenerator;
 
     public OefenPaneel(JFrame oefenFrame, String naam, int groep, int aantal, int random) {
         this.oefenFrame = oefenFrame;
@@ -30,12 +31,18 @@ class OefenPaneel extends JPanel implements ActionListener {
         this.random = random;
         setLayout(null);
 
+        aantalGoed = 0;
+        aantalFout = 0;
+        aantalTeGaan = aantal;
+
+        oefeningGenerator = new OefeningGenerator(groep, random);
+
         welkomLabel = new JLabel("Welkom " + naam + ", vul het antwoord van de volgende som in?");
         welkomLabel.setFont(new Font("Arial", Font.BOLD, 13));
         welkomLabel.setBounds(40, 20, 450, 20);
         add(welkomLabel);
 
-        opgaveLabel = new JLabel(getalA + "   +   " + getalB + "   = ");
+        opgaveLabel = new JLabel(oefeningGenerator.getGetalA() + "   +   " + oefeningGenerator.getGetalB() + "   = ");
         opgaveLabel.setFont(new Font("Arial", Font.BOLD, 48));
         opgaveLabel.setBounds(80, 80, 260, 45);
         add(opgaveLabel);
@@ -45,6 +52,7 @@ class OefenPaneel extends JPanel implements ActionListener {
         add(invulVak);
 
         volgendeKnop = new JButton("Volgende som");
+        volgendeKnop.addActionListener(this);
         volgendeKnop.setBounds(100, 150, 270, 30);
         add(volgendeKnop);
 
@@ -64,6 +72,47 @@ class OefenPaneel extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+        if(aantalTeGaan == 0) {
+            if(e.getSource() == volgendeKnop) {
+                showResult();
+            }
+        }
+        if(e.getSource() == volgendeKnop) {
+            // Parse the invulVak
+            try {
+                input = Integer.parseInt(invulVak.getText());
+            } catch(NumberFormatException nfe) {
+                nfe.printStackTrace();
+                System.out.println("NumberFormatException in invulVak");
+            }
 
+            // If input is equal to the answer do these
+            if(input == oefeningGenerator.getAntwoordGetal()) {
+                aantalGoed++;
+                aantalTeGaan--;
+                refresh();
+            }
+            else {
+                aantalFout++;
+                aantalTeGaan--;
+                refresh();
+                revalidate();
+            }
+        }
+    }
+
+    public void refresh() {
+        oefeningGenerator.genereerOpgave();
+        opgaveLabel.setText(oefeningGenerator.getGetalA() + "   +   " + oefeningGenerator.getGetalB() + "   = ");
+        invulVak.setText("");
+        aantalGoedLabel.setText("Aantal sommen tot nu toe goed: " + aantalGoed);
+        aantalFoutLabel.setText("Aantal sommen tot nu toe fout: " + aantalFout);
+        aantalTeGaanLabel.setText("Nog " + aantalTeGaan + " sommen te maken");
+        revalidate();
+    }
+
+    public void showResult() {
+        oefenFrame.dispose();
+        new ResultaatFrame(naam, groep, aantal, random, aantalGoed, aantalFout);
     }
 }
