@@ -15,7 +15,6 @@ public class KeuzeFrame extends JFrame {
 
 class KeuzePaneel extends JPanel implements ActionListener {
     private JFrame keuzeFrame;
-
     private JLabel groepLabel, somLabel, ranLabel;
     private JRadioButton groep3, groep4, groep5, groep6, groep7, groep8, ranJa, ranNee;
     private JTextField somField;

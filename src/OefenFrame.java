@@ -35,7 +35,7 @@ class OefenPaneel extends JPanel implements ActionListener {
         aantalFout = 0;
         aantalTeGaan = aantal;
 
-        oefeningGenerator = new OefeningGenerator(groep, random);
+        oefeningGenerator = new OefeningGenerator(groep, aantal);
 
         welkomLabel = new JLabel("Welkom " + naam + ", vul het antwoord van de volgende som in?");
         welkomLabel.setFont(new Font("Arial", Font.BOLD, 13));
@@ -72,33 +72,28 @@ class OefenPaneel extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(aantalTeGaan == 0) {
-            if(e.getSource() == volgendeKnop) {
-                showResult();
-            }
-        }
         if(e.getSource() == volgendeKnop) {
-            // Parse the invulVak
-            try {
-                input = Integer.parseInt(invulVak.getText());
-            } catch(NumberFormatException nfe) {
-                nfe.printStackTrace();
-                System.out.println("NumberFormatException in invulVak");
-            }
+                try {
+                    input = Integer.parseInt(invulVak.getText());
+                } catch(NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                    System.out.println("NumberFormatException in invulVak");
+                }
 
-            // If input is equal to the answer do these
-            if(input == oefeningGenerator.getAntwoordGetal()) {
-                aantalGoed++;
+                if(input == oefeningGenerator.getAntwoordGetal())
+                    aantalGoed++;
+                else
+                    aantalFout++;
+
                 aantalTeGaan--;
-                refresh();
+
+                if(aantalTeGaan == 1)
+                    volgendeKnop.setText("Naar resultaat");
+                if(aantalTeGaan != 0)
+                    refresh();
+                if(aantalTeGaan == 0)
+                    showResult();
             }
-            else {
-                aantalFout++;
-                aantalTeGaan--;
-                refresh();
-                revalidate();
-            }
-        }
     }
 
     public void refresh() {

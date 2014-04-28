@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 
 public class ResultaatFrame extends JFrame {
     public ResultaatFrame(String naam, int groep, int aantal, int random, int aantalGoed, int aantalFout) {
-        setSize(440, 310);
+        setSize(440, 280);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(new ResultaatPaneel(this, naam, groep, aantal, random, aantalGoed, aantalFout));
         setTitle("Rekentrainer - Resultaat " + naam);
@@ -17,7 +17,7 @@ class ResultaatPaneel extends JPanel implements ActionListener {
     private JButton opnieuwKnop, stopKnop;
     private JLabel afgerondPart1, afgerondPart2, aantalGoedLabel, resultaatGoed, aantalFoutLabel, resultaatFout, scoreLabel, resultaatScore;
     private String naam;
-    private int groep, aantal, random, aantalGoed, aantalFout;
+    private int groep, aantal, random;
 
     public ResultaatPaneel(JFrame resultaatFrame, String naam, int groep, int aantal, int random, int aantalGoed, int aantalFout) {
         setLayout(null);
@@ -25,8 +25,6 @@ class ResultaatPaneel extends JPanel implements ActionListener {
         this.groep = groep;
         this.aantal = aantal;
         this.random = random;
-        this.aantalGoed = aantalGoed;
-        this.aantalFout = aantalFout;
         this.resultaatFrame = resultaatFrame;
 
         afgerondPart1 = new JLabel("Je hebt de opdracht afgerond " + naam + ",");
@@ -48,7 +46,6 @@ class ResultaatPaneel extends JPanel implements ActionListener {
         resultaatBox.add(aantalGoedLabel);
         resultaatBox.add(resultaatGoed);
 
-
         aantalFoutLabel = new JLabel("Aantal sommen fout:");
         aantalFoutLabel.setBounds(15, 40, 200, 24);
         resultaatFout = new JLabel(aantalFout + "");
@@ -64,7 +61,7 @@ class ResultaatPaneel extends JPanel implements ActionListener {
         resultaatBox.add(resultaatScore);
 
         opnieuwKnop = new JButton("Nog een keer");
-        opnieuwKnop.setBounds(15, 215, 80, 30);
+        opnieuwKnop.setBounds(15, 215, 110, 30);
         opnieuwKnop.addActionListener(this);
         add(opnieuwKnop);
         stopKnop = new JButton("Stoppen");
