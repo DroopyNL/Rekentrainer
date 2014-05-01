@@ -42,7 +42,7 @@ class OefenPaneel extends JPanel implements ActionListener {
         welkomLabel.setBounds(40, 20, 450, 20);
         add(welkomLabel);
 
-        opgaveLabel = new JLabel(oefeningGenerator.getGetalA() + "   +   " + oefeningGenerator.getGetalB() + "   = ");
+        opgaveLabel = new JLabel(oefeningGenerator.getGetalA() + "  " + oefeningGenerator.getOperator() + "  " + oefeningGenerator.getGetalB() + "   = ");
         opgaveLabel.setFont(new Font("Arial", Font.BOLD, 48));
         opgaveLabel.setBounds(80, 80, 260, 45);
         add(opgaveLabel);
@@ -98,7 +98,7 @@ class OefenPaneel extends JPanel implements ActionListener {
 
     public void refresh() {
         oefeningGenerator.genereerOpgave();
-        opgaveLabel.setText(oefeningGenerator.getGetalA() + "   +   " + oefeningGenerator.getGetalB() + "   = ");
+        opgaveLabel.setText(oefeningGenerator.getGetalA() + "  " + oefeningGenerator.getOperator() + "  " + oefeningGenerator.getGetalB() + "   = ");
         invulVak.setText("");
         aantalGoedLabel.setText("Aantal sommen tot nu toe goed: " + aantalGoed);
         aantalFoutLabel.setText("Aantal sommen tot nu toe fout: " + aantalFout);
