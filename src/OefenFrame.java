@@ -35,7 +35,7 @@ class OefenPaneel extends JPanel implements ActionListener {
         aantalFout = 0;
         aantalTeGaan = aantal;
 
-        oefeningGenerator = new OefeningGenerator(groep, aantal);
+        oefeningGenerator = new OefeningGenerator(groep, aantal, random);
 
         welkomLabel = new JLabel("Welkom " + naam + ", vul het antwoord van de volgende som in?");
         welkomLabel.setFont(new Font("Arial", Font.BOLD, 13));

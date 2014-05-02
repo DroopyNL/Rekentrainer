@@ -105,10 +105,19 @@ class KeuzePaneel extends JPanel implements ActionListener {
 
             try {
                 aantal = Integer.parseInt(somField.getText());
+                if(OefeningGenerator.getFileLength(groep) < aantal) {
+                    mislukt = 1;
+                }
+                else {
+                    mislukt = 0;
+                }
             }
             catch(NumberFormatException nfe) {
                 nfe.printStackTrace();
                 mislukt = 1;
+            }
+            catch(Exception exc) {
+                exc.printStackTrace();
             }
 
             // Controlleer of willekeurige sommen gegenereerd moeten worden
