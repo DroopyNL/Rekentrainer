@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 /*
     Reads excercises from opgaven.txt and stores numbers in their corresponding variable.
@@ -10,8 +8,9 @@ public class OefeningGenerator {
     private String operator;
     private ArrayList<String[]> opgavenLijst;
 
-    public OefeningGenerator(int groep, int aantal) {
+    public OefeningGenerator(int groep, int aantal, int random) {
         this.groep = groep;
+        this.random = random;
         huidigeOpgave = 0;
         operator = " ";
 
@@ -31,12 +30,22 @@ public class OefeningGenerator {
     }
 
     public void genereerOpgave() {
-        getalA = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[0]);
-        getalB = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[1]);
-        antwoordGetal = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[2]);
-        operator = opgavenLijst.get(huidigeOpgave)[3];
+        if(random == 1) {
+            huidigeOpgave = (int) (Math.random() * opgavenLijst.size());
 
-        huidigeOpgave++;
+            getalA = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[0]);
+            operator = opgavenLijst.get(huidigeOpgave)[1];
+            getalB = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[2]);
+            antwoordGetal = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[4]);
+        }
+        else if(random == 0) {
+            getalA = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[0]);
+            operator = opgavenLijst.get(huidigeOpgave)[1];
+            getalB = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[2]);
+            antwoordGetal = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[4]);
+
+            huidigeOpgave++;
+        }
     }
 
     public int getGetalA() {
@@ -52,4 +61,25 @@ public class OefeningGenerator {
     }
 
     public String getOperator() { return operator; }
+
+    public static int getFileLength(int groep) throws Exception {
+        InputStream is = new BufferedInputStream(new FileInputStream("opgaven" + groep + ".txt"));
+        try {
+            byte[] c = new byte[1024];
+            int count = 0;
+            int readChars = 0;
+            boolean empty = true;
+            while ((readChars = is.read(c)) != -1) {
+                empty = false;
+                for (int i = 0; i < readChars; ++i) {
+                    if (c[i] == '\n') {
+                        ++count;
+                    }
+                }
+            }
+            return (count == 0 && !empty) ? 1 : count;
+        } finally {
+            is.close();
+        }
+    }
 }
