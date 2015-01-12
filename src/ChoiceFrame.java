@@ -3,34 +3,34 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 
-public class KeuzeFrame extends JFrame {
-    public KeuzeFrame(String name) {
+public class ChoiceFrame extends JFrame {
+    public ChoiceFrame(String name) {
         setSize(440, 265);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(new KeuzePaneel(name, this));
+        setContentPane(new ChoicePanel(name, this));
         setTitle("Rekentrainer - keuze scherm");
         setVisible(true);
     }
 }
 
-class KeuzePaneel extends JPanel implements ActionListener {
+class ChoicePanel extends JPanel implements ActionListener {
     private JFrame keuzeFrame;
     private JLabel groepLabel, somLabel, ranLabel;
     private JRadioButton groep3, groep4, groep5, groep6, groep7, groep8, ranJa, ranNee;
     private JTextField somField;
-    private JButton startKnop;
-    private int groep, aantal, random, mislukt;
-    private String naam;
+    private JButton startButton;
+    private int group, aantal, random, mislukt;
+    private String name;
 
-    public KeuzePaneel(String naam, KeuzeFrame keuzeFrame) {
+    public ChoicePanel(String name, ChoiceFrame choiceFrame) {
         setLayout(null);
         setBorder(new EmptyBorder(30, 20, 30, 20));
 
-        this.keuzeFrame = keuzeFrame;
-        this.naam = naam;
+        this.keuzeFrame = choiceFrame;
+        this.name = name;
 
         // Groep label en knoppen
-        groepLabel = new JLabel("Kies je groep:");
+        groepLabel = new JLabel("Kies je group:");
 
         groep3 = new JRadioButton("Groep 3");
         groep4 = new JRadioButton("Groep 4");
@@ -88,36 +88,37 @@ class KeuzePaneel extends JPanel implements ActionListener {
         ranRadio.add(ranJa);
         ranRadio.add(ranNee);
 
-        startKnop = new JButton("Start rekentrainer");
-        startKnop.addActionListener(this);
-        oostGroep.add(startKnop);
+        startButton = new JButton("Start rekentrainer");
+        startButton.addActionListener(this);
+        oostGroep.add(startButton);
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == startKnop) {
-            // Controlleer voor welke groep de sommen bestemd moeten zijn
-            if(groep3.isSelected()) { groep = 3; }
-            if(groep4.isSelected()) { groep = 4; }
-            if(groep5.isSelected()) { groep = 5; }
-            if(groep6.isSelected()) { groep = 6; }
-            if(groep7.isSelected()) { groep = 7; }
-            if(groep8.isSelected()) { groep = 8; }
+        if(e.getSource() == startButton) {
+            // Controlleer voor welke group de sommen bestemd moeten zijn
+            if(groep3.isSelected()) { group = 3; }
+            if(groep4.isSelected()) { group = 4; }
+            if(groep5.isSelected()) { group = 5; }
+            if(groep6.isSelected()) { group = 6; }
+            if(groep7.isSelected()) { group = 7; }
+            if(groep8.isSelected()) { group = 8; }
 
             try {
                 aantal = Integer.parseInt(somField.getText());
-                if(OefeningGenerator.getFileLength(groep) < aantal) {
+
+                if(ExcerciseGenerator.getFileLength(group) < aantal)
                     mislukt = 1;
-                }
-                else {
+                else
                     mislukt = 0;
-                }
             }
             catch(NumberFormatException nfe) {
                 nfe.printStackTrace();
+                JOptionPane.showMessageDialog(this, "U heeft geen getal ingevoerd.", "Geen getal", JOptionPane.ERROR_MESSAGE);
                 mislukt = 1;
             }
             catch(Exception exc) {
                 exc.printStackTrace();
+                mislukt = 1;
             }
 
             // Controlleer of willekeurige sommen gegenereerd moeten worden
@@ -125,7 +126,7 @@ class KeuzePaneel extends JPanel implements ActionListener {
             if(ranNee.isSelected()) { random = 0; }
 
             if(mislukt == 0) {
-                new OefenFrame(naam, groep, aantal, random);
+                new QuestionFrame(name, group, aantal, random);
                 keuzeFrame.dispose();
             }
         }

@@ -3,12 +3,18 @@ import java.util.*;
 /*
     Reads excercises from opgaven.txt and stores numbers in their corresponding variable.
  */
-public class OefeningGenerator {
+public class ExcerciseGenerator {
     private int groep, random, huidigeOpgave, getalA, getalB, antwoordGetal;
     private String operator;
     private ArrayList<String[]> opgavenLijst;
 
-    public OefeningGenerator(int groep, int aantal, int random) {
+    /**
+     * Takes a few parameters to get the corresponding excercises
+     * @param groep     required for the corresponding group txt file
+     * @param aantal
+     * @param random
+     */
+    public ExcerciseGenerator(int groep, int aantal, int random) {
         this.groep = groep;
         this.random = random;
         huidigeOpgave = 0;
@@ -17,7 +23,7 @@ public class OefeningGenerator {
         opgavenLijst = new ArrayList<String[]>();
 
         try {
-            BufferedReader lezer = new BufferedReader(new FileReader("opgaven" + groep + ".txt"));
+            BufferedReader lezer = new BufferedReader(new FileReader("Resources/opgaven" + groep + ".txt"));
             for(int i = 0; i < aantal; i++) {
                 String regel = lezer.readLine();
                 String[] opgave = regel.split(" ");
@@ -63,7 +69,7 @@ public class OefeningGenerator {
     public String getOperator() { return operator; }
 
     public static int getFileLength(int groep) throws Exception {
-        InputStream is = new BufferedInputStream(new FileInputStream("opgaven" + groep + ".txt"));
+        InputStream is = new BufferedInputStream(new FileInputStream("Resources/opgaven" + groep + ".txt"));
         try {
             byte[] c = new byte[1024];
             int count = 0;

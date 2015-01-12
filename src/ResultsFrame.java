@@ -2,24 +2,25 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ResultaatFrame extends JFrame {
-    public ResultaatFrame(String naam, int groep, int aantal, int random, int aantalGoed, int aantalFout) {
+public class ResultsFrame extends JFrame {
+    public ResultsFrame(String naam, int groep, int aantal, int random, int aantalGoed, int aantalFout) {
         setSize(440, 280);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(new ResultaatPaneel(this, naam, groep, aantal, random, aantalGoed, aantalFout));
+        setContentPane(new ResultsPanel(this, naam, groep, aantal, random, aantalGoed, aantalFout));
+        pack();
         setTitle("Rekentrainer - Resultaat " + naam);
         setVisible(true);
     }
 }
 
-class ResultaatPaneel extends JPanel implements ActionListener {
+class ResultsPanel extends JPanel implements ActionListener {
     private JFrame resultaatFrame;
     private JButton opnieuwKnop, stopKnop;
     private JLabel afgerondPart1, afgerondPart2, aantalGoedLabel, resultaatGoed, aantalFoutLabel, resultaatFout, scoreLabel, resultaatScore;
     private String naam;
     private int groep, aantal, random;
 
-    public ResultaatPaneel(JFrame resultaatFrame, String naam, int groep, int aantal, int random, int aantalGoed, int aantalFout) {
+    public ResultsPanel(JFrame resultaatFrame, String naam, int groep, int aantal, int random, int aantalGoed, int aantalFout) {
         setLayout(null);
         this.naam = naam;
         this.groep = groep;
@@ -72,7 +73,7 @@ class ResultaatPaneel extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == opnieuwKnop) {
-            new OefenFrame(naam, groep, aantal, random);
+            new QuestionFrame(naam, groep, aantal, random);
             resultaatFrame.dispose();
         }
 

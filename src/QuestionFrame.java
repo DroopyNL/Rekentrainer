@@ -3,17 +3,18 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 
-public class OefenFrame extends JFrame {
-    public OefenFrame(String naam, int groep, int aantal, int random) {
+public class QuestionFrame extends JFrame {
+    public QuestionFrame(String naam, int groep, int aantal, int random) {
         setSize(440, 310);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(new OefenPaneel(this, naam, groep, aantal, random));
+        setContentPane(new QuestionPanel(this, naam, groep, aantal, random));
+        pack();
         setTitle("Rekentrainer - Groep: " + groep);
         setVisible(true);
     }
 }
 
-class OefenPaneel extends JPanel implements ActionListener {
+class QuestionPanel extends JPanel implements ActionListener {
     private JFrame oefenFrame;
     private JLabel welkomLabel, opgaveLabel, aantalGoedLabel, aantalFoutLabel, aantalTeGaanLabel;
     private JButton volgendeKnop;
@@ -21,9 +22,9 @@ class OefenPaneel extends JPanel implements ActionListener {
     private JPanel statusGroep;
     private String naam;
     private int input, groep, aantal, random, getalA, getalB, antwoordGetal, aantalGoed, aantalFout, aantalTeGaan;
-    private OefeningGenerator oefeningGenerator;
+    private ExcerciseGenerator excerciseGenerator;
 
-    public OefenPaneel(JFrame oefenFrame, String naam, int groep, int aantal, int random) {
+    public QuestionPanel(JFrame oefenFrame, String naam, int groep, int aantal, int random) {
         this.oefenFrame = oefenFrame;
         this.naam = naam;
         this.groep = groep;
@@ -35,20 +36,21 @@ class OefenPaneel extends JPanel implements ActionListener {
         aantalFout = 0;
         aantalTeGaan = aantal;
 
-        oefeningGenerator = new OefeningGenerator(groep, aantal, random);
+        excerciseGenerator = new ExcerciseGenerator(groep, aantal, random);
 
         welkomLabel = new JLabel("Welkom " + naam + ", vul het antwoord van de volgende som in?");
         welkomLabel.setFont(new Font("Arial", Font.BOLD, 13));
         welkomLabel.setBounds(40, 20, 450, 20);
         add(welkomLabel);
 
-        opgaveLabel = new JLabel(oefeningGenerator.getGetalA() + "  " + oefeningGenerator.getOperator() + "  " + oefeningGenerator.getGetalB() + "   = ");
+        opgaveLabel = new JLabel(excerciseGenerator.getGetalA() + "  " + excerciseGenerator.getOperator() + "  " + excerciseGenerator.getGetalB() + "   = ");
         opgaveLabel.setFont(new Font("Arial", Font.BOLD, 48));
         opgaveLabel.setBounds(80, 80, 260, 45);
         add(opgaveLabel);
 
         invulVak = new JTextField(2);
         invulVak.setBounds(320, 80, 65, 45);
+        invulVak.addActionListener(this);
         add(invulVak);
 
         volgendeKnop = new JButton("Volgende som");
@@ -72,7 +74,7 @@ class OefenPaneel extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == volgendeKnop) {
+        if(e.getSource() == volgendeKnop || e.getSource() == invulVak) {
                 try {
                     input = Integer.parseInt(invulVak.getText());
                 } catch(NumberFormatException nfe) {
@@ -80,7 +82,7 @@ class OefenPaneel extends JPanel implements ActionListener {
                     System.out.println("NumberFormatException in invulVak");
                 }
 
-                if(input == oefeningGenerator.getAntwoordGetal())
+                if(input == excerciseGenerator.getAntwoordGetal())
                     aantalGoed++;
                 else
                     aantalFout++;
@@ -97,8 +99,8 @@ class OefenPaneel extends JPanel implements ActionListener {
     }
 
     public void refresh() {
-        oefeningGenerator.genereerOpgave();
-        opgaveLabel.setText(oefeningGenerator.getGetalA() + "  " + oefeningGenerator.getOperator() + "  " + oefeningGenerator.getGetalB() + "   = ");
+        excerciseGenerator.genereerOpgave();
+        opgaveLabel.setText(excerciseGenerator.getGetalA() + "  " + excerciseGenerator.getOperator() + "  " + excerciseGenerator.getGetalB() + "   = ");
         invulVak.setText("");
         aantalGoedLabel.setText("Aantal sommen tot nu toe goed: " + aantalGoed);
         aantalFoutLabel.setText("Aantal sommen tot nu toe fout: " + aantalFout);
@@ -108,6 +110,6 @@ class OefenPaneel extends JPanel implements ActionListener {
 
     public void showResult() {
         oefenFrame.dispose();
-        new ResultaatFrame(naam, groep, aantal, random, aantalGoed, aantalFout);
+        new ResultsFrame(naam, groep, aantal, random, aantalGoed, aantalFout);
     }
 }
