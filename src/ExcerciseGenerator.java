@@ -23,7 +23,7 @@ public class ExcerciseGenerator {
         opgavenLijst = new ArrayList<String[]>();
 
         try {
-            BufferedReader lezer = new BufferedReader(new FileReader("Resources/opgaven" + groep + ".txt"));
+            BufferedReader lezer = new BufferedReader(new FileReader("opgaven" + groep + ".txt"));
             for(int i = 0; i < aantal; i++) {
                 String regel = lezer.readLine();
                 String[] opgave = regel.split(" ");
@@ -42,13 +42,13 @@ public class ExcerciseGenerator {
             getalA = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[0]);
             operator = opgavenLijst.get(huidigeOpgave)[1];
             getalB = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[2]);
-            antwoordGetal = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[4]);
+            antwoordGetal = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[3]);
         }
         else if(random == 0) {
             getalA = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[0]);
             operator = opgavenLijst.get(huidigeOpgave)[1];
             getalB = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[2]);
-            antwoordGetal = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[4]);
+            antwoordGetal = Integer.parseInt(opgavenLijst.get(huidigeOpgave)[3]);
 
             huidigeOpgave++;
         }
@@ -69,7 +69,7 @@ public class ExcerciseGenerator {
     public String getOperator() { return operator; }
 
     public static int getFileLength(int groep) throws Exception {
-        InputStream is = new BufferedInputStream(new FileInputStream("Resources/opgaven" + groep + ".txt"));
+        InputStream is = new BufferedInputStream(new FileInputStream("opgaven" + groep + ".txt"));
         try {
             byte[] c = new byte[1024];
             int count = 0;
